@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#0b0d10">
+<title>末班地铁</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="screen-title" class="screen active">
+  <div class="title-wrap">
+    <h1 class="game-title">末班地铁</h1>
+    <p class="game-sub">丧尸末日 · 文字冒险</p>
+    <div class="title-menu">
+      <button id="btn-new" class="menu-btn">新的一夜</button>
+      <button id="btn-continue" class="menu-btn" disabled>继续</button>
+      <button id="btn-saves" class="menu-btn">存档</button>
+      <button id="btn-gallery" class="menu-btn">结局图鉴</button>
+      <button id="btn-settings" class="menu-btn">设置</button>
+    </div>
+    <p class="title-quote">"加班到凌晨两点的人,不会第一时间发现世界完蛋了。"</p>
+  </div>
+</div>
+
+<div id="screen-game" class="screen">
+  <div id="statusbar">
+    <span id="st-day">Day 0</span>
+    <span id="st-hp">❤️60</span>
+    <span id="st-san">🧠70</span>
+    <span id="st-items" title="物品">🎒0</span>
+    <button id="btn-game-menu" aria-label="菜单">☰</button>
+  </div>
+  <div id="narrative"></div>
+  <div id="choices"></div>
+  <div id="float-layer"></div>
+</div>
+
+<div id="screen-saves" class="screen">
+  <h2 class="screen-h">存档</h2>
+  <div id="save-slots"></div>
+  <div class="save-io">
+    <textarea id="save-io-text" placeholder="存档码…" rows="3"></textarea>
+    <div class="row">
+      <button id="btn-export" class="menu-btn small">导出当前进度</button>
+      <button id="btn-import" class="menu-btn small">导入存档码</button>
+    </div>
+  </div>
+  <button class="menu-btn back" data-back>返回</button>
+</div>
+
+<div id="screen-gallery" class="screen">
+  <h2 class="screen-h">结局图鉴 <span id="gallery-count"></span></h2>
+  <div id="gallery-grid"></div>
+  <div id="gallery-detail" hidden></div>
+  <button class="menu-btn back" data-back>返回</button>
+</div>
+
+<div id="screen-settings" class="screen">
+  <h2 class="screen-h">设置</h2>
+  <label class="set-row">文字速度
+    <select id="set-speed">
+      <option value="0">立即显示</option><option value="18" selected>正常</option>
+      <option value="34">缓慢</option>
+    </select></label>
+  <label class="set-row">文字特效(抖动/闪烁)
+    <input type="checkbox" id="set-fx" checked></label>
+  <label class="set-row">章节回溯
+    <select id="set-chapter"><option value="">(到达过的章节)</option></select></label>
+  <button id="btn-chapter-go" class="menu-btn small">从该章重新开始</button>
+  <button class="menu-btn back" data-back>返回</button>
+</div>
+
+<div id="modal" hidden>
+  <div class="modal-box">
+    <p id="modal-text"></p>
+    <div class="row"><button id="modal-ok" class="menu-btn small">确定</button>
+    <button id="modal-cancel" class="menu-btn small">取消</button></div>
+  </div>
+</div>
+
+<script src="js/core.js"></script>
+<script src="js/story-registry.js"></script>
+<script src="js/story-index.js"></script>
+<script src="js/save.js"></script>
+<script src="js/typewriter.js"></script>
+<script src="js/gallery.js"></script>
+<script src="js/engine.js"></script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+:root {
+  --bg:#0b0d10; --panel:#14181d; --text:#d8d3c8; --dim:#8a857b;
+  --c-white:#d8d3c8; --c-red:#e0524d; --c-green:#6faa5e; --c-blue:#5d9bd4;
+  --c-purple:#a26bd4; --c-gold:#d4a72c; --hp:#e0524d; --san:#5d9bd4;
+}
+* { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body { margin:0; background:var(--bg); color:var(--text);
+  font:17px/1.9 "Noto Serif SC","Songti SC","SimSun",serif; }
+.screen { display:none; min-height:100vh; padding:16px; max-width:640px; margin:0 auto; }
+.screen.active { display:block; }
+.screen-h { letter-spacing:6px; font-weight:normal; }
+
+/* 标题屏 */
+.game-title { font-size:44px; letter-spacing:12px; margin:16vh 0 0; text-align:center; }
+.game-sub { text-align:center; color:var(--dim); letter-spacing:4px; }
+.title-menu { margin-top:6vh; }
+.menu-btn { display:block; width:100%; min-height:48px; margin:12px 0; background:var(--panel);
+  color:var(--text); border:1px solid #2a2f36; border-radius:8px; font:inherit; font-size:18px;
+  cursor:pointer; }
+.menu-btn:disabled { opacity:.35; }
+.menu-btn.small { display:inline-block; width:auto; padding:0 18px; min-height:44px; font-size:16px; }
+.menu-btn.back { margin-top:24px; }
+.title-quote { color:var(--dim); text-align:center; font-size:13px; margin-top:10vh; }
+
+/* 状态栏 */
+#statusbar { position:sticky; top:0; display:flex; gap:14px; align-items:center;
+  background:rgba(11,13,16,.94); padding:10px 2px; border-bottom:1px solid #232830;
+  font-size:15px; z-index:5; }
+#st-hp { color:var(--hp); } #st-san { color:var(--san); }
+#st-day { color:var(--dim); }
+#btn-game-menu { margin-left:auto; background:none; border:none; color:var(--dim);
+  font-size:22px; min-width:44px; min-height:44px; cursor:pointer; }
+
+/* 正文 */
+#narrative { padding:18px 2px 8px; min-height:38vh; white-space:pre-wrap; }
+#narrative .kw-item { color:var(--c-gold); }
+#narrative .kw-npc { color:var(--c-blue); }
+#narrative .kw-red { color:var(--c-red); }
+
+/* 选项:6色 + 锁定 */
+.choice { display:block; width:100%; min-height:48px; margin:10px 0; padding:11px 14px;
+  text-align:left; background:var(--panel); border-radius:8px; font:inherit; font-size:17px;
+  border:1px solid #2a2f36; border-left-width:4px; color:var(--text); cursor:pointer; }
+.choice.white { border-left-color:#555; }
+.choice.red { border-left-color:var(--c-red); color:#eaa19e; }
+.choice.green { border-left-color:var(--c-green); color:#b9d8ae; }
+.choice.blue { border-left-color:var(--c-blue); color:#a9c9e8; }
+.choice.purple { border-left-color:var(--c-purple); color:#cbaae8; animation:fadeInUp .8s; }
+.choice.gold { border-left-color:var(--c-gold); color:#ecd9a0; animation:goldPulse 2s infinite; }
+.choice.locked { opacity:.45; border-left-color:#333; color:var(--dim); cursor:not-allowed;
+  animation:none; }
+.choice .lock-reason { display:block; font-size:13px; color:var(--dim); }
+.choice.red:not(.locked) { animation:tremble 2.4s infinite; }
+
+@keyframes goldPulse { 0%,100% { box-shadow:0 0 0 rgba(212,167,44,0); }
+  50% { box-shadow:0 0 14px rgba(212,167,44,.45); } }
+@keyframes tremble { 0%,94%,100% { transform:translateX(0); }
+  95% { transform:translateX(1px); } 97% { transform:translateX(-1px); } }
+@keyframes fadeInUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; } }
+
+/* gold 抉择聚焦 */
+body.gold-focus #narrative { opacity:.35; transition:opacity .6s; }
+.gold-tip { color:var(--c-gold); font-size:13px; text-align:center; letter-spacing:2px;
+  margin:4px 0; }
+
+/* 低理智 */
+body.san-low #narrative { text-shadow:0 0 2px rgba(224,82,77,.35); }
+.glitch { display:inline-block; animation:glitchShake .18s infinite; color:var(--c-red); }
+@keyframes glitchShake { 0% { transform:translate(0,0);} 25% { transform:translate(1px,-1px);}
+  50% { transform:translate(-1px,1px);} 100% { transform:translate(0,0);} }
+
+/* 死亡渐染 */
+body.dying::after { content:""; position:fixed; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse at center, transparent 30%, rgba(120,10,10,.55));
+  animation:bleed 2.5s forwards; }
+@keyframes bleed { from { opacity:0; } to { opacity:1; } }
+.ending-title { color:var(--c-gold); text-align:center; letter-spacing:3px; margin:16px 0; }
+
+/* 内容尽头封锁提示 */
+.end-of-content { border:1px dashed #3a4048; border-radius:8px; color:var(--dim);
+  text-align:center; padding:18px 12px; margin:14px 0; font-size:14px; letter-spacing:1px; }
+
+/* 飘字 */
+#float-layer { position:fixed; top:52px; right:14px; pointer-events:none; z-index:9; }
+.float-note { animation:floatUp 1.6s forwards; font-size:15px; text-align:right; }
+.float-note.neg { color:var(--c-red); } .float-note.pos { color:var(--c-green); }
+@keyframes floatUp { from { opacity:0; transform:translateY(6px); }
+  20% { opacity:1; } to { opacity:0; transform:translateY(-18px); } }
+
+/* 图鉴 */
+#gallery-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.g-cell { aspect-ratio:1; background:var(--panel); border-radius:8px; display:flex;
+  flex-direction:column; align-items:center; justify-content:center; font-size:12px;
+  border:1px solid #2a2f36; padding:4px; text-align:center; cursor:pointer; }
+.g-cell .g-id { color:var(--dim); font-size:10px; }
+.g-cell.locked-cell { color:#3d434b; }
+.g-cell.locked-cell .g-hint { filter:blur(2.5px); font-size:11px; }
+.g-cell.unlocked.fate { border-color:var(--c-gold); color:var(--c-gold); }
+.g-cell.unlocked.death { border-color:var(--c-red); color:var(--c-red); }
+#gallery-detail { background:var(--panel); border:1px solid #2a2f36; border-radius:8px;
+  padding:16px; margin-top:14px; white-space:pre-wrap; }
+
+/* 存档/设置/弹窗 */
+.save-slot { display:flex; justify-content:space-between; align-items:center; gap:8px;
+  background:var(--panel); border:1px solid #2a2f36; border-radius:8px; padding:12px;
+  margin:10px 0; min-height:48px; }
+.save-slot .meta { color:var(--dim); font-size:13px; }
+.save-slot .ops { display:flex; gap:6px; flex-shrink:0; }
+.save-slot .ops button { min-height:44px; min-width:44px; background:none; color:var(--text);
+  border:1px solid #2a2f36; border-radius:6px; font-size:14px; cursor:pointer; }
+.set-row { display:flex; justify-content:space-between; align-items:center; min-height:48px; }
+.set-row select { background:var(--panel); color:var(--text); border:1px solid #2a2f36;
+  border-radius:6px; min-height:40px; font:inherit; font-size:15px; }
+.set-row input[type=checkbox] { width:22px; height:22px; }
+#save-io-text { width:100%; background:var(--panel); color:var(--text);
+  border:1px solid #2a2f36; border-radius:8px; font-size:14px; padding:8px; }
+#modal { position:fixed; inset:0; background:rgba(0,0,0,.6); display:flex;
+  align-items:center; justify-content:center; z-index:99; }
+#modal[hidden] { display:none; }
+.modal-box { background:var(--panel); border-radius:10px; padding:20px; max-width:86vw; }
+.row { display:flex; gap:10px; justify-content:flex-end; margin-top:10px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .choice.gold, .choice.red:not(.locked), .glitch, .float-note, body.dying::after,
+  .choice.purple { animation:none !important; }
+}
