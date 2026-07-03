@@ -113,8 +113,8 @@
         SAVE.markChapter(cid);
         if (!st.chaptersReached.includes(cid)) st.chaptersReached.push(cid);
       }
-      // 判死(结局节点自身不再跳转)
-      if (!node.ending) {
+      // 判死(结局节点与die_hp自身不再跳转,防递归)
+      if (!node.ending && id !== "die_hp") {
         if (st.hp <= 0) { this.floatNotes(changes); return this.goto("die_hp"); }
         if (st.san <= 0) { this.floatNotes(changes); return this.goto("die_D10"); }
       }
