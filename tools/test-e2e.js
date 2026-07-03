@@ -65,6 +65,16 @@ ok($("narrative").textContent.includes("都是同事") || $("choices").textConte
 ok(w.SAVE.unlockedEndings().includes("D10"), "结局D10解锁入图鉴");
 ok(w.document.body.classList.contains("dying"), "死亡渐染class");
 
+// 结局图鉴:28格、解锁态、详情
+w.GALLERY.open();
+ok(w.document.querySelectorAll("#gallery-grid .g-cell").length === 28, "图鉴28格");
+ok($("gallery-count").textContent.includes("1 / 28"), "解锁计数1/28");
+const cells = [...w.document.querySelectorAll("#gallery-grid .g-cell")];
+ok(cells.filter(c => c.className.includes("unlocked")).length === 1, "仅D10亮起");
+cells[27].click(); // D10
+ok(!$("gallery-detail").hidden && $("gallery-detail").textContent.includes("都是同事"), "详情显示结局全文");
+ok(cells[0].textContent.includes("???"), "未解锁显示剪影");
+
 // 读档恢复(render 不重复结算 effects)
 const before = w.SAVE.load(2);
 w.ENGINE.state = before;

@@ -1,10 +1,38 @@
-/* 结局元数据与通用死亡节点(28结局元数据在 Task7 补全) */
+/* 28个结局元数据(名称/谜语提示/类型)+ 通用死亡节点
+   结局正文节点 end_Exx / die_Dxx 随各路线章节交付 */
 (function (g) {
   g.STORY.registerEndings({
-    D10: { name: "都是同事", hint: "当理智归零。", type: "death" }
+    E01: { name: "围城之火", hint: "有人把家守成了篝火。", type: "fate" },
+    E02: { name: "人去楼空", hint: "楼还在,人不在。", type: "fate" },
+    E03: { name: "围城之王", hint: "他终于坐上了主位,王座下面是白骨。", type: "fate" },
+    E04: { name: "向死而生", hint: "最后一程,他牵着她的手。", type: "fate" },
+    E05: { name: "平安喜乐", hint: "末日里也有人拜堂。", type: "fate" },
+    E06: { name: "迟到的人", hint: "他还在找,一直在找。", type: "fate" },
+    E07: { name: "一路向北", hint: "灶台上的汤还温着。", type: "fate" },
+    E08: { name: "半路家书", hint: "信送到了,写信的人没到。", type: "fate" },
+    E09: { name: "车队领袖", hint: "家不是一个地方,是一队车灯。", type: "fate" },
+    E10: { name: "无岸之海", hint: "船开了,岸没了。", type: "fate" },
+    E11: { name: "灯塔", hint: "有光的地方就有人。", type: "fate" },
+    E12: { name: "偷渡客", hint: "船票上是别人的名字。", type: "fate" },
+    E13: { name: "白名单", hint: "名单上有他,真相里没有。", type: "fate" },
+    E14: { name: "大白于天下", hint: "有人把火种扔进了黑夜。", type: "fate" },
+    E15: { name: "第一批疫苗", hint: "他的血比他的命走得更远。", type: "fate" },
+    E16: { name: "钢牙之王", hint: "钢牙断了,换了一副更硬的。", type: "fate" },
+    E17: { name: "回头是岸", hint: "刀放下的那一刻,雨停了。", type: "fate" },
+    E18: { name: "回到工位", hint: "他最后回到了最开始的地方。", type: "fate" },
+    D01: { name: "加班到死", hint: "打卡机还在响。", type: "death" },
+    D02: { name: "下行", hint: "电梯永远停在了负一层。", type: "death" },
+    D03: { name: "好心人", hint: "善良需要带刺。", type: "death" },
+    D04: { name: "坠雨", hint: "他和雨一起落下来。", type: "death" },
+    D05: { name: "幻听", hint: "门外没有人。", type: "death" },
+    D06: { name: "潜伏期", hint: "他以为忍一忍就能过去。", type: "death" },
+    D07: { name: "地下三层", hint: "医院的电梯不该有负三层。", type: "death" },
+    D08: { name: "哗变之夜", hint: "探照灯是他见过的最后的光。", type: "death" },
+    D09: { name: "投名状", hint: "他终究下不去手。", type: "death" },
+    D10: { name: "都是同事", hint: "原来大家都没下班。", type: "death" }
   });
   g.STORY.register("die", {
     "die_hp": { text: "你的身体先于意志放弃了。\n\n你靠着墙滑坐下去,像每一个加完班的深夜那样闭上眼。\n这一次,没有闹钟会再叫醒你。" },
-    "die_D10": { text: "你笑了起来。\n\n他们摇摇晃晃地朝你走来,西装,工牌,拖着脚。\n都是同事啊,你想,原来大家都没下班。\n你张开手臂,走进了早高峰的人流里。", ending: "D10" }
+    "die_D10": { text: "你笑了起来。\n\n他们摇摇晃晃地朝你走来,西装,工牌,拖着脚。\n都是同事啊,你想,原来大家都没下班。\n你张开手臂,走进了早高峰的人流里。\n\n很多天以后,一支侦察小队路过科技园。队员说,那边有一只丧尸很奇怪——\n它不咬人,只是每天在写字楼下排队,等一部永远不会来的电梯。", ending: "D10" }
   });
 })(typeof window !== "undefined" ? window : globalThis);
