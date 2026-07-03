@@ -1,0 +1,14 @@
+{
+  "name": "last-train",
+  "version": "0.1.0",
+  "private": true,
+  "description": "《末班地铁》丧尸末日文字冒险游戏",
+  "scripts": {
+    "test": "node tools/test-core.js && node tools/test-save.js && node tools/test-typewriter.js && node tools/test-validate.js && node tools/test-e2e.js",
+    "validate": "node tools/validate.js",
+    "build": "node tools/build.js"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1"
+  }
+}

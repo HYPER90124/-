@@ -34,7 +34,8 @@ for (const id of Object.keys(S.nodes)) {
     if (c.require && c.require.aff && !globalThis.CORE.AFF_NPCS.includes(c.require.aff.npc))
       errors.push(`非法require键: ${id} -> aff.${c.require.aff.npc}`);
   }
-  if (!node.ending && (!node.choices || node.choices.length === 0) && !node.goto && !node.endOfContent)
+  if (!node.ending && (!node.choices || node.choices.length === 0) && !node.goto && !node.endOfContent
+      && id !== "die_hp") // die_hp 由引擎特殊渲染(回标题按钮)
     errors.push(`死胡同节点(无choices/goto/ending): ${id}`);
 }
 console.log(`节点数: ${Object.keys(S.nodes).length}  正文+选项字数(CJK): ${cjk}`);
