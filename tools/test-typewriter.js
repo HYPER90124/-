@@ -1,0 +1,11 @@
+require("../js/typewriter.js");
+const T = globalThis.TYPE;
+let n = 0, f = 0;
+const eq = (a, b, m) => { n++; if (a !== b) { f++; console.error("FAIL", m, "\n", a, "\n!=\n", b); } };
+eq(T.parseMarkup("拿到{item:消防斧}。").html, '拿到<span class="kw-item">消防斧</span>。', "item标记");
+eq(T.parseMarkup("{npc:老周}皱眉。").html, '<span class="kw-npc">老周</span>皱眉。', "npc标记");
+eq(T.parseMarkup("{red:快跑}!").html, '<span class="kw-red">快跑</span>!', "red标记");
+eq(T.parseMarkup("a<b&c").html, "a&lt;b&amp;c", "转义");
+eq(T.parseMarkup("拿到{item:消防斧}。").plain, "拿到消防斧。", "plain剥离");
+console.log(f ? `${f}/${n} FAILED` : `ALL ${n} PASS`);
+process.exit(f ? 1 : 0);
