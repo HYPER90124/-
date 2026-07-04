@@ -63,6 +63,33 @@ ok(w.ENGINE.state.items.includes("keycard"), "节点effects生效(门禁卡)");
 ok($("st-items").textContent === "🎒1", "状态栏物品数");
 ok(w.SAVE.loadAuto() && w.SAVE.loadAuto().node === "ch0_005", "自动存档跟随");
 
+// #15 手电电量/电池/背包面板
+w.CORE.applyEffects({ item: "+flashlight", battery: 60 }, w.ENGINE.state);
+w.ENGINE.updateStatusbar();
+ok(!$("st-batt").hidden && $("st-batt").textContent.includes("60%"), "持手电时状态栏显示电量");
+w.ENGINE.openBag();
+ok(!$("bag").hidden, "点击🎒打开背包面板");
+ok($("bag-body").textContent.includes("手电") && $("bag-body").textContent.includes("60%"), "背包列出手电与电量");
+w.CORE.applyEffects({ battery: -100 }, w.ENGINE.state);
+ok(w.ENGINE.state.battery === 0, "电量下限钳制为0");
+w.CORE.applyEffects({ batteries: 1 }, w.ENGINE.state);
+w.ENGINE.openBag();
+const useBtn = [...$("bag-body").querySelectorAll("button")].find(b => b.textContent.includes("装入"));
+ok(!!useBtn, "有备用电池且未满电时出现装入按钮"); if (useBtn) useBtn.click();
+ok(w.ENGINE.state.battery === 40 && w.ENGINE.state.batteries === 0, "装入电池+40%并消耗一节");
+$("bag-close").click(); ok($("bag").hidden, "关闭背包面板");
+w.CORE.applyEffects({ item: "-flashlight" }, w.ENGINE.state); w.ENGINE.updateStatusbar();
+ok($("st-batt").hidden, "无手电时电量指示隐藏");
+
+// #8 点击整屏跳过打字机
+w.ENGINE.settings.speed = 20;
+w.ENGINE.state = w.CORE.newState();
+w.ENGINE.render("ch0_001", { skipEffects: true });
+ok($("choices").querySelectorAll(".choice").length === 0, "打字机进行中选项尚未出现");
+$("screen-game").dispatchEvent(new w.Event("click"));
+ok($("choices").querySelectorAll(".choice").length >= 2, "点击整屏后立即显示全文与选项");
+w.ENGINE.settings.speed = 0;
+
 // 锁定选项:ch0_030 的紫选项需要 saved_fangwen
 w.ENGINE.goto("ch0_030");
 const lockedBtns = [...w.document.querySelectorAll("#choices .choice.locked")];
