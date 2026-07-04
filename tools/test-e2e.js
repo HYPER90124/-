@@ -137,9 +137,68 @@ ok(goldBtns.length === 4, "第一幕末尾四个金色命运抉择");
 ok(w.document.body.classList.contains("gold-focus"), "gold聚焦生效");
 goldBtns.find(b => b.textContent.includes("罗湖")).click(); // 寻人线
 ok(w.ENGINE.state.flags.includes("route_rescue"), "选择寻人线设置route标记");
-ok($("choices").textContent.includes("寻人线"), "进入寻人线封锁尾");
+ok(w.ENGINE.state.node === "ch1_091", "寻人线经过场进入第二幕");
+if (contBtn()) contBtn().click();
+ok(w.ENGINE.state.node === "r2_001", "寻人线直接流入第二幕(不再封锁)");
+
+// —— 第二幕·寻人线:三结局 + D07 ——
+// E06 迟到的人:途中救天桥 → 迟到
+w.ENGINE.state = w.CORE.newState(); w.ENGINE.goto("r2_002");
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("救他们")).click();
+while (contBtn()) contBtn().click();
+ok(w.ENGINE.state.node === "end_E06", "寻人线E06(迟到的人)可达");
+ok(w.SAVE.unlockedEndings().includes("E06"), "E06解锁");
+// E05 平安喜乐:直奔→地铁隧道→跳过地下→带走病人
+w.ENGINE.state = w.CORE.newState(); w.CORE.applyEffects({ humanity: 20 }, w.ENGINE.state);
+w.ENGINE.goto("r2_002");
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("别停")).click();
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("地铁隧道")).click();
+while (contBtn()) contBtn().click();
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("往上走")).click();
+while (contBtn()) contBtn().click();
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("都带上")).click();
+while (contBtn()) contBtn().click();
+ok(w.ENGINE.state.node === "end_E05", "寻人线E05(平安喜乐)可达");
+ok(w.SAVE.unlockedEndings().includes("E05"), "E05解锁");
+// D07 地下三层:下地下 → 举烛硬闯
+w.ENGINE.state = w.CORE.newState(); w.ENGINE.goto("r2_011");
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("下去看")).click();
+while (contBtn()) contBtn().click();
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("举着蜡烛")).click();
+ok(w.ENGINE.state.node === "die_D07", "寻人线D07(地下三层)可达");
+// E04 向死而生:走高架(引尸潮)→ 程霜被感染
+w.ENGINE.state = w.CORE.newState(); w.ENGINE.goto("r2_003");
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("上高架桥")).click();
+while (contBtn()) contBtn().click();
+// r2_021→r2_040→r2_041→end_E04 全是继续
+let guard = 0;
+while (w.ENGINE.state.node !== "end_E04" && guard++ < 20) {
+  if (contBtn()) { contBtn().click(); continue; }
+  const b = enabledChoices()[0]; if (b) b.click(); else break;
+}
+ok(w.ENGINE.state.node === "end_E04", "寻人线E04(向死而生)可达");
+
+// —— 第二幕·固守线:三结局(靠人性值gate) ——
+// E01 围城之火:高人性
+w.ENGINE.state = w.CORE.newState(); w.CORE.applyEffects({ humanity: 40 }, w.ENGINE.state);
+w.ENGINE.goto("h2_020");
+let e01 = [...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("肩并肩"));
+ok(!!e01, "高人性解锁E01终局选项"); e01.click();
+ok(w.ENGINE.state.node === "end_E01", "固守线E01(围城之火)可达");
+// E03 围城之王:低人性
+w.ENGINE.state = w.CORE.newState(); w.CORE.applyEffects({ humanity: -40 }, w.ENGINE.state);
+w.ENGINE.goto("h2_020");
+let e03 = [...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("亲手结果"));
+ok(!!e03, "低人性解锁E03终局选项"); e03.click();
+ok(w.ENGINE.state.node === "end_E03", "固守线E03(围城之王)可达");
+// E02 人去楼空:中性(E01/E03均锁定,只剩E02)
+w.ENGINE.state = w.CORE.newState(); w.ENGINE.goto("h2_020");
+ok([...w.document.querySelectorAll("#choices .choice.locked")].length === 2, "中性人性时E01/E03均锁定");
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")][0].click();
+ok(w.ENGINE.state.node === "end_E02", "固守线E02(人去楼空)可达");
 
 // 结局图鉴:28格、解锁态、详情
+w.GALLERY.open();
 w.GALLERY.open();
 ok(w.document.querySelectorAll("#gallery-grid .g-cell").length === 28, "图鉴28格");
 const unlockedCount = w.SAVE.unlockedEndings().length;

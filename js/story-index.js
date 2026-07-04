@@ -2,5 +2,7 @@
 (typeof window !== "undefined" ? window : globalThis).STORY_FILES = [
   "story/endings.js",
   "story/ch0-prologue.js",
-  "story/ch1-baishizhou.js"
+  "story/ch1-baishizhou.js",
+  "story/ch2-rescue.js",
+  "story/ch2-hold.js"
 ];
