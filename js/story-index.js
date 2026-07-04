@@ -8,5 +8,6 @@
   "story/ch2-north.js",
   "story/ch2-sea.js",
   "story/ch2-truth.js",
-  "story/ch2-fall.js"
+  "story/ch2-fall.js",
+  "story/ch3-camp.js"
 ];
