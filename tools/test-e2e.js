@@ -99,6 +99,46 @@ enabledChoices()[1].click(); // 等官方救援 → die_D01
 ok(w.ENGINE.state.node === "die_D01", "D01死亡结局可达");
 ok(w.SAVE.unlockedEndings().includes("D01"), "D01解锁入图鉴");
 
+// 第一幕衔接:序章末尾直连 ch1_001(不再是 endOfContent 死结)
+ok(!w.STORY.nodes["ch0_080"].endOfContent && w.STORY.nodes["ch0_080"].goto === "ch1_001", "序章直连第一幕");
+ok(w.STORY.chapters["ch1"] && w.STORY.nodes["ch1_001"], "第一幕已注册");
+
+// D03 好心人:四楼劫匪 → 硬挣脱身亡
+w.ENGINE.state = w.CORE.newState();
+w.ENGINE.goto("ch1_009");
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("赌他")).click();
+ok(w.ENGINE.state.node === "die_D03", "D03死亡结局可达");
+ok(w.SAVE.unlockedEndings().includes("D03"), "D03解锁入图鉴");
+
+// D04 坠雨:六楼翻窗跨天台坠落
+w.ENGINE.state = w.CORE.newState();
+w.ENGINE.goto("ch1_014");
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("外墙")).click();
+ok(w.ENGINE.state.node === "die_D04", "D04死亡结局可达");
+
+// D05 幻听:五楼低理智幻听开门(紫选项需 san<30)
+w.ENGINE.state = w.CORE.newState();
+w.CORE.applyEffects({ san: -50 }, w.ENGINE.state); // 压到低理智
+w.ENGINE.render("ch1_012", { skipEffects: true });
+const hallucBtn = [...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("鬼使神差"));
+ok(!!hallucBtn, "低理智解锁幻听紫选项");
+hallucBtn.click();
+ok(w.ENGINE.state.node === "die_D05", "D05死亡结局可达");
+// 高理智时该紫选项应锁定
+w.ENGINE.state = w.CORE.newState(); // san=70
+w.ENGINE.render("ch1_012", { skipEffects: true });
+ok([...w.document.querySelectorAll("#choices .choice.locked")].some(b => b.textContent.includes("鬼使神差")), "高理智时幻听选项锁定");
+
+// 六线 gold 分岔:四条明线各自可选并进入对应封锁尾
+w.ENGINE.state = w.CORE.newState();
+w.ENGINE.goto("ch1_026");
+const goldBtns = [...w.document.querySelectorAll("#choices .choice.gold")];
+ok(goldBtns.length === 4, "第一幕末尾四个金色命运抉择");
+ok(w.document.body.classList.contains("gold-focus"), "gold聚焦生效");
+goldBtns.find(b => b.textContent.includes("罗湖")).click(); // 寻人线
+ok(w.ENGINE.state.flags.includes("route_rescue"), "选择寻人线设置route标记");
+ok($("choices").textContent.includes("寻人线"), "进入寻人线封锁尾");
+
 // 结局图鉴:28格、解锁态、详情
 w.GALLERY.open();
 ok(w.document.querySelectorAll("#gallery-grid .g-cell").length === 28, "图鉴28格");
