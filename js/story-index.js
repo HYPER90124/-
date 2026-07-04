@@ -4,5 +4,9 @@
   "story/ch0-prologue.js",
   "story/ch1-baishizhou.js",
   "story/ch2-rescue.js",
-  "story/ch2-hold.js"
+  "story/ch2-hold.js",
+  "story/ch2-north.js",
+  "story/ch2-sea.js",
+  "story/ch2-truth.js",
+  "story/ch2-fall.js"
 ];
