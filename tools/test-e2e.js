@@ -164,7 +164,7 @@ ok(w.SAVE.unlockedEndings().includes("E05"), "E05解锁");
 w.ENGINE.state = w.CORE.newState(); w.ENGINE.goto("r2_011");
 [...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("下去看")).click();
 while (contBtn()) contBtn().click();
-[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("举着蜡烛")).click();
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("举着手电")).click();
 ok(w.ENGINE.state.node === "die_D07", "寻人线D07(地下三层)可达");
 // E04 向死而生:走高架(引尸潮)→ 程霜被感染
 w.ENGINE.state = w.CORE.newState(); w.ENGINE.goto("r2_003");
