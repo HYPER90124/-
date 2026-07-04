@@ -3,7 +3,7 @@
   const AFF_NPCS = ["akai", "cheng", "zhou", "xule", "xiaoman", "qin"];
   const ITEM_NAMES = { fireAxe: "消防斧", keycard: "员工门禁卡", kunlunCard: "昆仑门禁卡",
     antibiotics: "抗生素", carKey: "车钥匙", note_cheng: "程霜的字条", radio: "收音机",
-    usb_drive: "监控U盘" };
+    usb_drive: "监控U盘", flashlight: "手电", candy: "水果糖", scarf: "旧围巾" };
   const NPC_NAMES = { akai: "阿凯", cheng: "程霜", zhou: "老周", xule: "许乐", xiaoman: "小满", qin: "秦鹭" };
 
   function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
@@ -11,7 +11,8 @@
   function newState() {
     return { node: "ch0_001", hp: 60, san: 70, humanity: 0,
       aff: { akai: 0, cheng: 0, zhou: 0, xule: 0, xiaoman: 0, qin: 0 },
-      items: [], flags: [], day: 0, visited: [], chaptersReached: ["ch0"] };
+      items: [], flags: [], day: 0, battery: 0, batteries: 0,
+      visited: [], chaptersReached: ["ch0"] };
   }
 
   function itemName(id) { return ITEM_NAMES[id] || id; }
@@ -45,6 +46,10 @@
       } else if (key === "humanity") {
         if (v) { state.humanity = clamp(state.humanity + v, -100, 100); changes.push({ k: key, delta: v }); }
       } else if (key === "day") { state.day = v;
+      } else if (key === "battery") {
+        if (v) { state.battery = clamp((state.battery || 0) + v, 0, 100); changes.push({ k: "battery", delta: v }); }
+      } else if (key === "batteries") {
+        if (v) { state.batteries = Math.max(0, (state.batteries || 0) + v); changes.push({ k: "batteries", delta: v }); }
       } else if (key === "item") {
         const list = Array.isArray(v) ? v : [v];
         for (const it of list) {

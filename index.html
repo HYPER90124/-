@@ -28,7 +28,8 @@
     <span id="st-day">Day 0</span>
     <span id="st-hp">❤️60</span>
     <span id="st-san">🧠70</span>
-    <span id="st-items" title="物品">🎒0</span>
+    <span id="st-items" title="点击打开背包">🎒0</span>
+    <span id="st-batt" class="st-batt" hidden></span>
     <button id="btn-game-menu" aria-label="菜单">☰</button>
   </div>
   <div id="narrative"></div>
@@ -69,6 +70,14 @@
     <select id="set-chapter"><option value="">(到达过的章节)</option></select></label>
   <button id="btn-chapter-go" class="menu-btn small">从该章重新开始</button>
   <button class="menu-btn back" data-back>返回</button>
+</div>
+
+<div id="bag" hidden>
+  <div class="bag-box">
+    <h3 class="bag-title">背包</h3>
+    <div id="bag-body"></div>
+    <div class="row"><button id="bag-close" class="menu-btn small">关闭</button></div>
+  </div>
 </div>
 
 <div id="modal" hidden>

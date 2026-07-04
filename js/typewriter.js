@@ -17,6 +17,7 @@
     // 拆成"字符或完整span"的序列,保证标签不被截断
     const parts = html.match(/<span[^>]*>.*?<\/span>|&[a-z]+;|[\s\S]/g) || [];
     let i = 0, timer = null, done = false;
+    const clickEl = opts.clickTarget || el;
     const target = document.createElement("div");
     el.appendChild(target);
     function glitchify(chunk) {
@@ -34,11 +35,11 @@
         h.className = "glitch"; h.textContent = HALLUC[Math.floor(Math.random() * HALLUC.length)];
         target.appendChild(h); setTimeout(() => h.remove(), 600);
       }
-      el.removeEventListener("click", finish);
+      clickEl.removeEventListener("click", finish);
       if (opts.onDone) opts.onDone();
     }
     if (speed === 0) { finish(); return { skip: finish }; }
-    el.addEventListener("click", finish);
+    clickEl.addEventListener("click", finish);
     timer = setInterval(() => {
       if (i >= parts.length) return finish();
       target.innerHTML += glitchify(parts[i++]);

@@ -3,7 +3,7 @@
   const $ = id => document.getElementById(id);
   const CORE = window.CORE, SAVE = window.SAVE, TYPE = window.TYPE, STORY = window.STORY;
 
-  const NOTE_LABELS = { hp: "体魄", san: "理智" };
+  const NOTE_LABELS = { hp: "体魄", san: "理智", battery: "电量", batteries: "备用电池" };
 
   const ENGINE = {
     state: null,
@@ -54,6 +54,8 @@
       $("btn-settings").onclick = () => { this.renderSettings(); this.show("screen-settings"); };
       $("btn-game-menu").onclick = () =>
         this.confirm("回到标题?(进度已自动保存)", () => this.toTitle());
+      $("st-items").onclick = () => this.openBag();
+      $("bag-close").onclick = () => { $("bag").hidden = true; };
       document.querySelectorAll("[data-back]").forEach(b => b.onclick = () => this.toTitle());
       $("btn-export").onclick = () => {
         const st = this.state || SAVE.loadAuto();
@@ -135,7 +137,7 @@
       nar.innerHTML = ""; cho.innerHTML = "";
       TYPE.render(nar, node.text, {
         speed: this.settings.speed, fx: this.settings.fx,
-        sanLow: st.san < 30,
+        sanLow: st.san < 30, clickTarget: $("screen-game"),
         onDone: () => this.renderChoices(node)
       });
     },
@@ -223,6 +225,52 @@
       $("st-san").textContent = "🧠" + st.san;
       $("st-items").textContent = "🎒" + st.items.length;
       $("st-items").title = st.items.map(CORE.itemName).join("、") || "空";
+      const bt = $("st-batt");
+      if (st.items.includes("flashlight")) {
+        bt.hidden = false; bt.textContent = "🔦" + (st.battery || 0) + "%";
+        bt.classList.toggle("low", (st.battery || 0) <= 20);
+      } else bt.hidden = true;
+    },
+
+    /* ---------- 背包 ---------- */
+    openBag() {
+      const st = this.state, body = $("bag-body");
+      body.innerHTML = "";
+      if (!st.items.length && !st.batteries) {
+        const p = document.createElement("p");
+        p.className = "bag-empty"; p.textContent = "背包空空如也。";
+        body.appendChild(p);
+      }
+      for (const id of st.items) {
+        const row = document.createElement("div");
+        row.className = "bag-item";
+        if (id === "flashlight") {
+          const pct = st.battery || 0;
+          row.innerHTML = '<span class="bag-name">🔦 ' + CORE.itemName(id) + "</span>"
+            + '<span class="bag-batt"><span class="batt-bar"><i style="width:'
+            + pct + '%"></i></span>' + pct + "%</span>";
+        } else {
+          row.innerHTML = '<span class="bag-name">' + CORE.itemName(id) + "</span>";
+        }
+        body.appendChild(row);
+      }
+      if (st.batteries > 0) {
+        const row = document.createElement("div");
+        row.className = "bag-item";
+        row.innerHTML = '<span class="bag-name">🔋 备用电池 ×' + st.batteries + "</span>";
+        if (st.items.includes("flashlight") && (st.battery || 0) < 100) {
+          const btn = document.createElement("button");
+          btn.className = "bag-use"; btn.textContent = "装入 (+40%)";
+          btn.onclick = () => {
+            st.batteries -= 1;
+            st.battery = CORE.clamp((st.battery || 0) + 40, 0, 100);
+            SAVE.auto(st); this.updateStatusbar(); this.openBag();
+          };
+          row.appendChild(btn);
+        }
+        body.appendChild(row);
+      }
+      $("bag").hidden = false;
     },
     floatNotes(changes) {
       for (const c of changes || []) {
