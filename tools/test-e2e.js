@@ -158,8 +158,28 @@ while (contBtn()) contBtn().click();
 while (contBtn()) contBtn().click();
 [...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("都带上")).click();
 while (contBtn()) contBtn().click();
+ok(w.ENGINE.state.node === "r2_032", "带走病人后到达梧桐山抉择点");
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("留下来")).click();
+while (contBtn()) contBtn().click();
 ok(w.ENGINE.state.node === "end_E05", "寻人线E05(平安喜乐)可达");
 ok(w.SAVE.unlockedEndings().includes("E05"), "E05解锁");
+// #9 折返接阿凯 → 治疗 → 一家北上/出海/定居(并入既有结局)
+w.ENGINE.state = w.CORE.newState(); w.ENGINE.goto("r2_032");
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("折返")).click();
+while (contBtn()) contBtn().click();
+ok(w.ENGINE.state.flags.includes("akai_treated"), "#11 程霜处置阿凯(akai_treated)");
+ok(w.ENGINE.state.node === "r2_054", "折返接人后进入一家去向抉择");
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("往北")).click();
+while (contBtn()) contBtn().click();
+ok(w.ENGINE.state.node === "r2_057" && w.STORY.nodes["r2_057"].ending === "E07", "#9 一家北上并入E07");
+// #10 带程霜回白石洲接阿凯 → 出海并入E11
+w.ENGINE.state = w.CORE.newState(); w.ENGINE.goto("r2_030");
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("回白石洲")).click();
+while (contBtn()) contBtn().click();
+ok(w.ENGINE.state.node === "r2_054", "#10 带程霜回白石洲团聚后进入去向抉择");
+[...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("去蛇口")).click();
+while (contBtn()) contBtn().click();
+ok(w.ENGINE.state.node === "r2_056" && w.STORY.nodes["r2_056"].ending === "E11", "#10 一家出海并入E11");
 // D07 地下三层:下地下 → 举烛硬闯
 w.ENGINE.state = w.CORE.newState(); w.ENGINE.goto("r2_011");
 [...w.document.querySelectorAll("#choices .choice:not(.locked)")].find(b => b.textContent.includes("下去看")).click();
