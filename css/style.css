@@ -82,10 +82,12 @@ body.dying::after { content:""; position:fixed; inset:0; pointer-events:none;
 
 /* 飘字 */
 #float-layer { position:fixed; top:52px; right:14px; pointer-events:none; z-index:9; }
-.float-note { animation:floatUp 1.6s forwards; font-size:15px; text-align:right; }
+.float-note { animation:floatUp 3.6s forwards; font-size:18.75px; text-align:right; }
 .float-note.neg { color:var(--c-red); } .float-note.pos { color:var(--c-green); }
-@keyframes floatUp { from { opacity:0; transform:translateY(6px); }
-  20% { opacity:1; } to { opacity:0; transform:translateY(-18px); } }
+@keyframes floatUp { 0% { opacity:0; transform:translateY(6px); }
+  8% { opacity:1; transform:translateY(0); }
+  72% { opacity:1; transform:translateY(-6px); }
+  100% { opacity:0; transform:translateY(-20px); } }
 
 /* 图鉴 */
 #gallery-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }

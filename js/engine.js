@@ -234,7 +234,7 @@
         el.className = "float-note " + (c.delta < 0 ? "neg" : "pos");
         el.textContent = label + (c.delta > 0 ? " +" : " ") + c.delta;
         $("float-layer").appendChild(el);
-        setTimeout(() => el.remove(), 1700);
+        setTimeout(() => el.remove(), 3700);
       }
       this.updateStatusbar();
     }
