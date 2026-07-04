@@ -2,7 +2,8 @@
 (function (g) {
   const AFF_NPCS = ["akai", "cheng", "zhou", "xule", "xiaoman", "qin"];
   const ITEM_NAMES = { fireAxe: "消防斧", keycard: "员工门禁卡", kunlunCard: "昆仑门禁卡",
-    antibiotics: "抗生素", carKey: "车钥匙", note_cheng: "程霜的字条", radio: "收音机" };
+    antibiotics: "抗生素", carKey: "车钥匙", note_cheng: "程霜的字条", radio: "收音机",
+    usb_drive: "监控U盘" };
   const NPC_NAMES = { akai: "阿凯", cheng: "程霜", zhou: "老周", xule: "许乐", xiaoman: "小满", qin: "秦鹭" };
 
   function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
